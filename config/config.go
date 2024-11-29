@@ -9,6 +9,7 @@ import (
 	"github.com/0xPolygon/cdk-data-availability/config/types"
 	"github.com/0xPolygon/cdk-data-availability/db"
 	"github.com/0xPolygon/cdk-data-availability/log"
+	"github.com/0xPolygon/cdk-data-availability/metrics"
 	"github.com/0xPolygon/cdk-data-availability/rpc"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/mitchellh/mapstructure"
@@ -28,6 +29,7 @@ type Config struct {
 	Log        log.Config
 	RPC        rpc.Config
 	L1         L1Config
+	Metrics    metrics.Config
 }
 
 // L1Config is a struct that defines L1 contract and service settings

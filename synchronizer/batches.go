@@ -14,6 +14,7 @@ import (
 	"github.com/0xPolygon/cdk-data-availability/log"
 	"github.com/0xPolygon/cdk-data-availability/rpc"
 	"github.com/0xPolygon/cdk-data-availability/sequencer"
+	"github.com/0xPolygon/cdk-data-availability/synchronizer/metrics"
 	"github.com/0xPolygon/cdk-data-availability/types"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -86,6 +87,8 @@ func (bs *BatchSynchronizer) resolveCommittee() error {
 
 // Start starts the synchronizer
 func (bs *BatchSynchronizer) Start() {
+	metrics.Register()
+
 	log.Infof("starting number synchronizer, DAC addr: %v", bs.self)
 	go bs.consumeEvents()
 	go bs.produceEvents()
@@ -173,6 +176,8 @@ func (bs *BatchSynchronizer) filterEvents() error {
 		}
 		bs.events <- iter.Event
 	}
+
+	metrics.LatestSyncedBlockHeight(end)
 
 	// advance start block
 	err = setStartBlock(bs.db, end)
