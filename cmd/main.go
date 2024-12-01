@@ -15,6 +15,7 @@ import (
 	"github.com/0xPolygon/cdk-data-availability/db"
 	"github.com/0xPolygon/cdk-data-availability/etherman"
 	"github.com/0xPolygon/cdk-data-availability/log"
+	"github.com/0xPolygon/cdk-data-availability/metrics"
 	"github.com/0xPolygon/cdk-data-availability/rpc"
 	"github.com/0xPolygon/cdk-data-availability/sequencer"
 	"github.com/0xPolygon/cdk-data-availability/services/datacom"
@@ -82,6 +83,10 @@ func start(cliCtx *cli.Context) error {
 		logVersion()
 	}
 
+	if c.Metrics.Enabled {
+		metrics.Init()
+	}
+
 	// Prepare DB
 	pg, err := db.NewSQLDB(c.DB)
 	if err != nil {
@@ -144,6 +149,11 @@ func start(cliCtx *cli.Context) error {
 	go batchSynchronizer.Start()
 	cancelFuncs = append(cancelFuncs, batchSynchronizer.Stop)
 
+	// start metrics
+	if c.Metrics.Enabled {
+		go metrics.StartMetricsHttpServer(c.Metrics)
+	}
+
 	// Register services
 	server := rpc.NewServer(
 		c.RPC,
@@ -186,18 +196,6 @@ func logVersion() {
 		"os/arch", fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
 	)
 }
-
-/*
-func PrintVersion(w io.Writer) {
-	fmt.Fprintf(w, "Version:      %s\n", Version)
-	fmt.Fprintf(w, "Git revision: %s\n", GitRev)
-	fmt.Fprintf(w, "Git branch:   %s\n", GitBranch)
-	fmt.Fprintf(w, "Go version:   %s\n", runtime.Version())
-	fmt.Fprintf(w, "Built:        %s\n", BuildDate)
-	fmt.Fprintf(w, "OS/Arch:      %s/%s\n", runtime.GOOS, runtime.GOARCH)
-}
-
-*/
 
 func waitSignal(cancelFuncs []context.CancelFunc) {
 	signals := make(chan os.Signal, 1)

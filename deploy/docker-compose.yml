@@ -16,7 +16,8 @@ services:
         reservations:
           memory: 512M
     ports:
-      - 8444:8444
+      - 8454:8444
+      - 9191:9191
     volumes:
       - ./config.toml:/app/config.toml
       - ./log:/log

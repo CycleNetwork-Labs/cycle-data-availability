@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/0xPolygon/cdk-data-availability/log"
+	"github.com/0xPolygon/cdk-data-availability/rpc/metrics"
 	"github.com/didip/tollbooth/v6"
 )
 
@@ -48,6 +49,7 @@ func NewServer(
 
 // Start initializes the JSON RPC server to listen for request
 func (s *Server) Start() error {
+	metrics.Register()
 	return s.startHTTP()
 }
 
@@ -149,6 +151,7 @@ func (s *Server) handle(w http.ResponseWriter, req *http.Request) {
 	} else {
 		respLen = s.handleBatchRequest(req, w, data)
 	}
+	metrics.RequestDuration(start)
 	combinedLog(req, start, http.StatusOK, respLen)
 }
 
@@ -163,6 +166,7 @@ func (s *Server) isSingleRequest(data []byte) (bool, Error) {
 }
 
 func (s *Server) handleSingleRequest(httpRequest *http.Request, w http.ResponseWriter, data []byte) int {
+	defer metrics.RequestHandled(metrics.RequestHandledLabelSingle)
 	request, err := s.parseRequest(data)
 	if err != nil {
 		handleError(w, err)
@@ -186,6 +190,7 @@ func (s *Server) handleSingleRequest(httpRequest *http.Request, w http.ResponseW
 }
 
 func (s *Server) handleBatchRequest(httpRequest *http.Request, w http.ResponseWriter, data []byte) int {
+	defer metrics.RequestHandled(metrics.RequestHandledLabelBatch)
 	requests, err := s.parseRequests(data)
 	if err != nil {
 		handleError(w, err)
@@ -230,10 +235,16 @@ func (s *Server) parseRequests(data []byte) ([]Request, error) {
 }
 
 func (s *Server) handleInvalidRequest(w http.ResponseWriter, err error) {
-	handleError(w, err)
+	defer metrics.RequestHandled(metrics.RequestHandledLabelInvalid)
+	log.Error(err)
+	_, err = w.Write([]byte(err.Error()))
+	if err != nil {
+		log.Error(err)
+	}
 }
 
 func handleError(w http.ResponseWriter, err error) {
+	defer metrics.RequestHandled(metrics.RequestHandledLabelError)
 	log.Error(err)
 	_, err = w.Write([]byte(err.Error()))
 	if err != nil {
