@@ -21,13 +21,13 @@ Note: This is just one way to run the DAN. It's also possible to run the DAN usi
 version: "3.5"
 networks:
   default:
-    name: cdk-data-availability
+    name: cycle-data-availability
 
 services:
 
-  cdk-data-availability:
-    container_name: cdk-data-availability
-    image: cdk-data-availability:version
+  cycle-data-availability:
+    container_name: cycle-data-availability
+    image: cycle-data-availability:version
     #restart: unless-stopped
     deploy:
       resources:
@@ -44,10 +44,10 @@ services:
     command:
       - "/bin/sh"
       - "-c"
-      - "/app/cdk-data-availability run --cfg /app/config.toml"
+      - "/app/cycle-data-availability run --cfg /app/config.toml"
 
-  cdk-data-availability-db:
-    container_name: cdk-data-availability-db
+  cycle-data-availability-db:
+    container_name: cycle-data-availability-db
     restart: unless-stopped
     image: postgres:15
     healthcheck:
@@ -98,7 +98,7 @@ LogBackups = 5
 User = "committee_user"
 Password = "committee_password"
 Name = "committee_db"
-Host = "cdk-data-availability-db"
+Host = "cycle-data-availability-db"
 Port = "5432"
 EnableLog = false
 MaxConns = 200

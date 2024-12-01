@@ -42,7 +42,7 @@ GOBASE := $(shell pwd)
 GOBIN := $(GOBASE)/dist
 GOOS := $(shell uname -s  | tr '[:upper:]' '[:lower:]')
 GOENVVARS := GOBIN=$(GOBIN) CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(ARCH)
-GOBINARY := cdk-data-availability
+GOBINARY := cycle-data-availability
 GOCMD := $(GOBASE)/cmd
 
 LDFLAGS += -X 'github.com/0xPolygon/cdk-data-availability.Version=$(VERSION)'
@@ -56,15 +56,15 @@ build: ## Builds the binary locally into ./dist
 
 .PHONY: build-docker
 build-docker: ## Builds a docker image with the node binary
-	docker build -t cdk-data-availability -f ./Dockerfile .
+	docker build -t cycle-data-availability -f ./Dockerfile .
 
 .PHONY: build-docker-with-tag
 build-docker-with-tag: ## Builds a docker image with the node binary
-	docker build -t cdk-data-availability:$(DOCKER_TAG) -f ./Dockerfile .
+	docker build -t cycle-data-availability:$(DOCKER_TAG) -f ./Dockerfile .
 
 .PHONY: build-docker-nc
 build-docker-nc: ## Builds a docker image with the node binary - but without build cache
-	docker build --no-cache=true -t cdk-data-availability -f ./Dockerfile .
+	docker build --no-cache=true -t cycle-data-availability -f ./Dockerfile .
 
 .PHONY: install-linter
 install-linter: ## Installs the linter
