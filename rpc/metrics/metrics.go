@@ -48,14 +48,11 @@ func Register() {
 		},
 	}
 
-	start := 0.1
-	width := 0.1
-	count := 10
 	histograms = []prometheus.HistogramOpts{
 		{
 			Name:    requestDurationName,
 			Help:    "[JSONRPC] Histogram for the runtime of requests",
-			Buckets: prometheus.LinearBuckets(start, width, count),
+			Buckets: prometheus.DefBuckets,
 		},
 	}
 
