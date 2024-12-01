@@ -26,7 +26,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-const appName = "cdk-data-availability"
+const appName = "cycle-data-availability"
 
 var (
 	configFileFlag = cli.StringFlag{

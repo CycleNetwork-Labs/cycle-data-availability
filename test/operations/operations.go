@@ -363,27 +363,27 @@ func ApplyL2Txs(ctx context.Context, txs []*types.Transaction, auth *bind.Transa
 			out, _ := cmd.CombinedOutput()
 			log.Debug("zkevm node: ", string(out))
 			cmd = exec.Command(
-				"docker", "logs", "--tail", "1000", "cdk-data-availability-0",
+				"docker", "logs", "--tail", "1000", "cycle-data-availability-0",
 			)
 			out, _ = cmd.CombinedOutput()
 			log.Debug("DA0: ", string(out))
 			cmd = exec.Command(
-				"docker", "logs", "--tail", "1000", "cdk-data-availability-1",
+				"docker", "logs", "--tail", "1000", "cycle-data-availability-1",
 			)
 			out, _ = cmd.CombinedOutput()
 			log.Debug("DA1: ", string(out))
 			cmd = exec.Command(
-				"docker", "logs", "--tail", "1000", "cdk-data-availability-2",
+				"docker", "logs", "--tail", "1000", "cycle-data-availability-2",
 			)
 			out, _ = cmd.CombinedOutput()
 			log.Debug("DA2: ", string(out))
 			cmd = exec.Command(
-				"docker", "logs", "--tail", "1000", "cdk-data-availability-3",
+				"docker", "logs", "--tail", "1000", "cycle-data-availability-3",
 			)
 			out, _ = cmd.CombinedOutput()
 			log.Debug("DA3: ", string(out))
 			cmd = exec.Command(
-				"docker", "logs", "--tail", "1000", "cdk-data-availability-4",
+				"docker", "logs", "--tail", "1000", "cycle-data-availability-4",
 			)
 			out, _ = cmd.CombinedOutput()
 			log.Debug("DA4: ", string(out))
