@@ -1,3 +1,14 @@
+# Cycle Data Availability
+
+This project is based on [CDK Data Availability](https://github.com/0xPolygon/cdk-data-availability) and include some modifications to provide Data availability for Cycle Network.
+
+Changes:
+- Updated contracts for compatibility with Cycle Network's smart contracts.
+- Added monitoring metrics to track node running status.
+- Various bug fixes and improvements.
+
+For the original project details, please refer to the original README below.
+
 # CDK Data Availability
 
 ### Data Availability Layer for CDK Validium
